@@ -159,7 +159,9 @@ const PasswordGen = () => {
                                                 PasswordLength < 12 ? 'text-bg-warning' :
                                                     PasswordLength < 50 ? 'text-bg-success' :
                                                         'text-bg-success'}`} style={{ width: progressBarWidth }}>
-                                                {PasswordLength}
+
+                                                {PasswordLength < 6 ? 'week password' : PasswordLength < 12 ? 'fairly strong password' : PasswordLength < 50 ? 'strong password' : 'strong password'}
+
                                             </div>
                                         </div>
                                     </div>
