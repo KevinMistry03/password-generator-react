@@ -146,7 +146,9 @@ const PasswordGen = () => {
                                             aria-valuemax={100}
                                         >
                                             <div className={`progress-bar ${PasswordLength < 6 ? 'text-bg-danger' :
-                                                'text-bg-warning'}`} style={{ width: progressBarWidth }}>
+                                                PasswordLength < 12 ? 'text-bg-warning' :
+                                                    PasswordLength < 50 ? 'text-bg-success' :
+                                                        'text-bg-warning'}`} style={{ width: progressBarWidth }}>
                                                 {PasswordLength}
                                             </div>
                                         </div>
@@ -176,7 +178,7 @@ const PasswordGen = () => {
                         </div>
                     </div>
                 </div>
-            </div>
+            </div >
         </>
     );
 };
