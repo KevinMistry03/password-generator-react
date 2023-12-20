@@ -2,14 +2,11 @@ import React, { useEffect, useState } from "react";
 import { FiRefreshCcw } from "react-icons/fi";
 import { MdContentCopy } from "react-icons/md";
 import toast, { Toaster } from 'react-hot-toast';
-import tippy from 'tippy.js';
-import 'tippy.js/dist/tippy.css';
 
 
 const PasswordGen = () => {
 
     const [GeneratedPassword, setGeneratedPassword] = useState('');
-    const [CopyText, setCopyText] = useState('');
     const [PasswordLength, setPasswordLength] = useState(4);
     const [progressBarWidth, setProgressBarWidth] = useState('75%');
     const [Checkboxvalue, setCheckboxvalue] = useState([
@@ -26,17 +23,19 @@ const PasswordGen = () => {
     }
 
 
-    tippy('#Button', {
-        content: "Copy",
-    });
-
-    tippy('#GenerateButton', {
-        content: 'Generate'
-    })
-
     const clickToCopy = () => {
         navigator.clipboard.writeText(GeneratedPassword);
-        toast.success('Text Copied');
+        toast.success('Password Copied', {
+            style: {
+                border: '1px solid #713200',
+                padding: '16px',
+                color: '#713200',
+            },
+            iconTheme: {
+                primary: '#713200',
+                secondary: '#FFFAEE',
+            },
+        });
     }
 
 
@@ -77,6 +76,7 @@ const PasswordGen = () => {
         genRandomPassword();
     }, [PasswordLength, Checkboxvalue]);
 
+
     useEffect(() => {
         if (PasswordLength < 6) {
             setProgressBarWidth('25%');
@@ -115,11 +115,11 @@ const PasswordGen = () => {
                                     <div className="modal-body p-4 text-center">
                                         <h1 className="mb-0 text-dark">{GeneratedPassword}</h1>
                                         <p className="mb-0">
-                                            <button id="GenerateButton" className="btn btn-dark rounded-pill mt-4 me-2"
+                                            <button className="btn btn-dark rounded-pill mt-4 me-2"
                                                 onClick={genRandomPassword}>
                                                 <FiRefreshCcw size={20} />
                                             </button>
-                                            <button id="Button" className="btn btn-dark rounded-pill mt-4" onClick={clickToCopy}>
+                                            <button className="btn btn-dark rounded-pill mt-4" onClick={clickToCopy}>
                                                 <MdContentCopy size={20} />
                                             </button>
                                         </p>
@@ -135,7 +135,7 @@ const PasswordGen = () => {
                                     <div className="col-sm-6 col-lg-8 themed-grid-col">
                                         <p className="lead">
                                             <label htmlFor="passwordLength" className="form-label">
-                                                Password Length: {PasswordLength}
+                                                Password Length {PasswordLength}
                                             </label>
                                             <input
                                                 type="range"
@@ -158,7 +158,7 @@ const PasswordGen = () => {
                                             <div className={`progress-bar ${PasswordLength < 6 ? 'text-bg-danger' :
                                                 PasswordLength < 12 ? 'text-bg-warning' :
                                                     PasswordLength < 50 ? 'text-bg-success' :
-                                                        'text-bg-warning'}`} style={{ width: progressBarWidth }}>
+                                                        'text-bg-success'}`} style={{ width: progressBarWidth }}>
                                                 {PasswordLength}
                                             </div>
                                         </div>
