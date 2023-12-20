@@ -1,13 +1,15 @@
 import React, { useEffect, useState } from "react";
 import { FiRefreshCcw } from "react-icons/fi";
 import { MdContentCopy } from "react-icons/md";
+import toast, { Toaster } from 'react-hot-toast';
+import tippy from 'tippy.js';
+import 'tippy.js/dist/tippy.css';
 
 
 const PasswordGen = () => {
 
     const [GeneratedPassword, setGeneratedPassword] = useState('');
     const [CopyText, setCopyText] = useState('');
-    const [Passwordstatus, setPasswordstatus] = useState('');
     const [PasswordLength, setPasswordLength] = useState(4);
     const [progressBarWidth, setProgressBarWidth] = useState('75%');
     const [Checkboxvalue, setCheckboxvalue] = useState([
@@ -24,14 +26,19 @@ const PasswordGen = () => {
     }
 
 
+    tippy('#Button', {
+        content: "Copy",
+    });
+
+    tippy('#GenerateButton', {
+        content: 'Generate'
+    })
+
     const clickToCopy = () => {
         navigator.clipboard.writeText(GeneratedPassword);
-        setCopyText('Text Copied');
-
-        setTimeout(() => {
-            setCopyText('Copy');
-        }, 3000);
+        toast.success('Text Copied');
     }
+
 
     const genRandomPassword = () => {
         let Caracter = ''
@@ -40,6 +47,7 @@ const PasswordGen = () => {
         const selectedOption = Checkboxvalue.filter((checkbox) => checkbox.state);
 
         if (selectedOption.length === 0) {
+            toast.error("Please Select One Option")
             return;
         }
 
@@ -71,13 +79,10 @@ const PasswordGen = () => {
 
     useEffect(() => {
         if (PasswordLength < 6) {
-            setPasswordstatus('Password is poor');
             setProgressBarWidth('25%');
         } else if (PasswordLength < 12) {
-            setPasswordstatus('Password is medium');
             setProgressBarWidth('50%');
         } else if (PasswordLength < 50) {
-            setPasswordstatus('Password is strong');
             setProgressBarWidth('100%');
         }
     }, [PasswordLength]);
@@ -86,6 +91,10 @@ const PasswordGen = () => {
 
     return (
         <>
+            <Toaster
+                position="top-center"
+                reverseOrder={false}
+            />
             <div className="bg-dark text-secondary px-4 py-5 text-center">
                 <div className="py-5">
                     <h1 className="display-5 fw-bold text-white">
@@ -106,11 +115,12 @@ const PasswordGen = () => {
                                     <div className="modal-body p-4 text-center">
                                         <h1 className="mb-0 text-dark">{GeneratedPassword}</h1>
                                         <p className="mb-0">
-                                            <button className="btn btn-dark mt-4 me-2" onClick={genRandomPassword}>
-                                                <FiRefreshCcw />
+                                            <button id="GenerateButton" className="btn btn-dark rounded-pill mt-4 me-2"
+                                                onClick={genRandomPassword}>
+                                                <FiRefreshCcw size={20} />
                                             </button>
-                                            <button className="btn btn-outline-secondary mt-4" onClick={clickToCopy}>
-                                                <MdContentCopy />
+                                            <button id="Button" className="btn btn-dark rounded-pill mt-4" onClick={clickToCopy}>
+                                                <MdContentCopy size={20} />
                                             </button>
                                         </p>
                                     </div>
